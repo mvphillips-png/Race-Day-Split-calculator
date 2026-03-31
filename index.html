@@ -157,6 +157,10 @@
 #gsc .li{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txd);letter-spacing:1px;display:flex;align-items:center;gap:5px;}
 #gsc .ld{width:6px;height:6px;border-radius:50%;display:inline-block;}
 
+/* RESET BUTTON */
+#gsc .resetbtn{display:block;margin:24px auto 0;padding:10px 28px;background:transparent;border:1px solid var(--cy);border-radius:4px;color:var(--cy);font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;text-shadow:var(--glc);transition:all .18s;}
+#gsc .resetbtn:hover{background:var(--dc);box-shadow:0 0 20px rgba(0,245,255,0.18);}
+
 /* FOOTER */
 #gsc .ftr{margin-top:56px;padding-top:18px;border-top:1px solid var(--br);text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--txd);letter-spacing:2px;}
 #gsc .ftr strong{color:var(--cy);text-shadow:var(--glc);font-weight:normal;}
@@ -467,7 +471,36 @@
         '<div class="strats">' +
           '<div class="card metro"><div class="chdr"><div class="cname">THE METRONOME</div><div class="ctag">EVEN SPLITS // PERFECT CONSISTENCY</div></div>' + metroHTML + '</div>' +
           '<div class="card ushape"><div class="chdr"><div class="cname">THE U-SHAPE</div><div class="ctag">FAST START &#x2192; SETTLE &#x2192; KICK</div></div>' + uHTML + legend + '</div>' +
-        '</div>';
+        '</div>' +
+        '<button class="resetbtn" data-reset="' + resEl.id + '">&#x21BA; CALCULATE ANOTHER RACE</button>';
+
+      // Wire the reset button immediately after injecting HTML
+      var resetBtn = resEl.querySelector('.resetbtn');
+      resetBtn.addEventListener('click', function () {
+        var section = resEl.id === 't-res' ? 'track' : 'xc';
+        // Clear selection state
+        sel[section] = null;
+        // Deselect all race buttons for this section
+        var rbtns = root.querySelectorAll('.rbtn[data-section="' + section + '"]');
+        for (var i = 0; i < rbtns.length; i++) { rbtns[i].classList.remove('on'); }
+        // Clear time inputs
+        if (section === 'track') {
+          document.getElementById('t-min').value = '';
+          document.getElementById('t-sec').value = '';
+          document.getElementById('t-ms').value  = '';
+        } else {
+          document.getElementById('x-min').value = '';
+          document.getElementById('x-sec').value = '';
+          document.getElementById('x-ms').value  = '';
+        }
+        // Hide results and error
+        resEl.classList.remove('on');
+        resEl.innerHTML = '';
+        var errEl = document.getElementById(section === 'track' ? 't-err' : 'x-err');
+        errEl.classList.remove('on');
+        // Scroll back up to race selector
+        root.querySelector('.panel.on .rgrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
 
       resEl.classList.add('on');
       resEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
