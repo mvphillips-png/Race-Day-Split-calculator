@@ -4,185 +4,395 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GRAVIFICER // SPLIT CALCULATOR</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,400;0,600;0,700;1,400&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ── ROOT TOKENS ─────────────────────────────────────────────────────────── */
 #gsc {
-  --bg:  #04060a;
-  --bg2: #080c14;
-  --bg3: #0c1220;
-  --cy:  #00f5ff;
-  --mg:  #ff00aa;
-  --am:  #ffb300;
-  --gn:  #00ff88;
-  --tx:  #c8d8e8;
-  --txd: #5a7090;
-  --br:  rgba(0,245,255,0.18);
-  --glc: 0 0 10px rgba(0,245,255,0.5),0 0 26px rgba(0,245,255,0.14);
-  --glm: 0 0 10px rgba(255,0,170,0.5),0 0 26px rgba(255,0,170,0.14);
-  --gla: 0 0 10px rgba(255,179,0,0.5), 0 0 26px rgba(255,179,0,0.14);
-  --dc:  rgba(0,245,255,0.10);
-  --dm:  rgba(255,0,170,0.09);
-  font-family: 'Exo 2', sans-serif;
+  --bg:    #080b10;
+  --bg2:   #0d1117;
+  --bg3:   #131920;
+  --bg4:   #1a2230;
+  --cy:    #00e8ff;
+  --cy2:   #80f4ff;
+  --mg:    #ff2d78;
+  --am:    #ffcc00;
+  --am2:   #ffe566;
+  --gn:    #00e676;
+  --gn2:   #80ffb8;
+  --tx:    #ffffff;
+  --tx2:   #d0e8f8;
+  --tx3:   #7a9ab8;
+  --br:    rgba(0,232,255,0.14);
+  --br2:   rgba(255,255,255,0.07);
+  --dc:    rgba(0,232,255,0.12);
+  --dm:    rgba(255,45,120,0.10);
+  --da:    rgba(255,204,0,0.10);
+
+  font-family: 'Rajdhani', 'Exo 2', sans-serif;
   background: var(--bg);
-  color: var(--tx);
-  padding: 36px 20px 72px;
-  max-width: 960px;
+  color: var(--tx2);
+  padding: 40px 24px 80px;
+  max-width: 980px;
   margin: 0 auto;
   position: relative;
-  overflow: hidden;
 }
+
+#gsc * { box-sizing: border-box; margin: 0; padding: 0; }
+#gsc .inn { position: relative; z-index: 1; }
+
+/* subtle grid */
 #gsc::before {
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background-image:linear-gradient(rgba(0,245,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.03) 1px,transparent 1px);
-  background-size:40px 40px;
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    linear-gradient(rgba(0,232,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,232,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
-#gsc::after {
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,245,255,0.011) 2px,rgba(0,245,255,0.011) 4px);
+
+/* ── HEADER ──────────────────────────────────────────────────────────────── */
+#gsc .hdr {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--br);
+  position: relative;
 }
-#gsc *{box-sizing:border-box;margin:0;padding:0;}
-#gsc .inn{position:relative;z-index:1;}
+#gsc .hdr::after {
+  content:''; position:absolute; bottom:-1px; left:50%; transform:translateX(-50%);
+  width:220px; height:2px;
+  background: linear-gradient(90deg,transparent,var(--cy),transparent);
+}
+#gsc .txid {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--cy); letter-spacing: 5px;
+  text-transform: uppercase; margin-bottom: 14px; opacity: 0.7;
+}
+#gsc .title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(26px, 5vw, 52px);
+  font-weight: 900; letter-spacing: 5px;
+  color: var(--tx); line-height: 1.05;
+}
+#gsc .title em {
+  color: var(--cy); font-style: normal;
+}
+#gsc .sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px; color: var(--tx3); letter-spacing: 3px; margin-top: 10px;
+  text-transform: uppercase;
+}
 
-/* HEADER */
-#gsc .hdr{text-align:center;margin-bottom:38px;padding-bottom:22px;border-bottom:1px solid var(--br);position:relative;}
-#gsc .hdr::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:180px;height:1px;background:linear-gradient(90deg,transparent,var(--cy),transparent);box-shadow:var(--glc);}
-#gsc .txid{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--mg);letter-spacing:4px;text-transform:uppercase;margin-bottom:10px;text-shadow:var(--glm);}
-#gsc .title{font-family:'Orbitron',sans-serif;font-size:clamp(20px,4.5vw,42px);font-weight:900;letter-spacing:4px;color:var(--cy);text-shadow:var(--glc);line-height:1.1;}
-#gsc .title em{color:var(--mg);text-shadow:var(--glm);font-style:normal;}
-#gsc .sub{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--txd);letter-spacing:2px;margin-top:8px;}
+/* ── TABS ─────────────────────────────────────────────────────────────────── */
+#gsc .tabs {
+  display: flex; gap: 6px; margin-bottom: 28px;
+  padding: 5px; background: var(--bg2);
+  border: 1px solid var(--br); border-radius: 6px;
+}
+#gsc .tab {
+  flex: 1; padding: 13px 16px;
+  background: transparent; border: 1px solid transparent; border-radius: 4px;
+  color: var(--tx3); font-family: 'Orbitron', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; cursor: pointer; transition: all .2s;
+}
+#gsc .tab:hover { color: var(--tx2); border-color: var(--br); }
+#gsc .tab.on {
+  background: var(--dc); border-color: var(--cy);
+  color: var(--cy); font-weight: 900;
+}
 
-/* TABS */
-#gsc .tabs{display:flex;gap:4px;margin-bottom:24px;padding:4px;background:var(--bg2);border:1px solid var(--br);border-radius:4px;}
-#gsc .tab{flex:1;padding:10px 12px;background:transparent;border:1px solid transparent;border-radius:3px;color:var(--txd);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
-#gsc .tab:hover{color:var(--tx);border-color:var(--br);}
-#gsc .tab.on{background:var(--dc);border-color:var(--cy);color:var(--cy);text-shadow:var(--glc);}
+/* ── PANELS ───────────────────────────────────────────────────────────────── */
+#gsc .panel { display: none; }
+#gsc .panel.on { display: block; }
 
-/* PANELS */
-#gsc .panel{display:none;}
-#gsc .panel.on{display:block;}
+/* ── LIVE BADGE ───────────────────────────────────────────────────────────── */
+#gsc .live {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--gn); letter-spacing: 2px; margin-bottom: 20px;
+}
+#gsc .ldot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gn); box-shadow: 0 0 8px var(--gn);
+  animation: gsc-blink 1.4s infinite;
+}
+@keyframes gsc-blink { 0%,100%{opacity:1;} 50%{opacity:.25;} }
 
-/* LIVE */
-#gsc .live{display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gn);letter-spacing:2px;margin-bottom:18px;}
-#gsc .ldot{width:6px;height:6px;border-radius:50%;background:var(--gn);box-shadow:0 0 6px rgba(0,255,136,0.8);animation:gsc-blink 1.4s infinite;}
-@keyframes gsc-blink{0%,100%{opacity:1;}50%{opacity:.3};}
+/* ── RACE BUTTONS ─────────────────────────────────────────────────────────── */
+#gsc .rgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px,1fr));
+  gap: 10px; margin-bottom: 26px;
+}
+#gsc .rbtn {
+  padding: 16px 10px;
+  background: var(--bg2); border: 1px solid var(--br2);
+  border-radius: 6px; color: var(--tx3); cursor: pointer;
+  text-align: center; transition: all .18s;
+}
+#gsc .rbtn:hover {
+  border-color: rgba(0,232,255,0.4); color: var(--tx2);
+  background: var(--bg3);
+}
+#gsc .rbtn.on {
+  background: var(--dc); border-color: var(--cy);
+  color: var(--tx);
+}
+#gsc .rdist {
+  display: block; font-family: 'Orbitron', sans-serif;
+  font-size: 17px; font-weight: 900; margin-bottom: 5px; letter-spacing: 1px;
+  color: inherit;
+}
+#gsc .rbtn.on .rdist { color: var(--cy); }
+#gsc .rlap {
+  display: block; font-family: 'Share Tech Mono', monospace;
+  font-size: 10px; opacity: .65; letter-spacing: 1px;
+}
 
-/* RACE GRID */
-#gsc .rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;margin-bottom:22px;}
-#gsc .rbtn{padding:12px 8px;background:var(--bg2);border:1px solid var(--br);border-radius:4px;color:var(--txd);cursor:pointer;text-align:center;transition:all .18s;}
-#gsc .rbtn:hover{border-color:rgba(0,245,255,0.35);color:var(--tx);}
-#gsc .rbtn.on{background:var(--dc);border-color:var(--cy);color:var(--cy);text-shadow:var(--glc);}
-#gsc .rdist{display:block;font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;margin-bottom:3px;}
-#gsc .rlap{display:block;font-family:'Share Tech Mono',monospace;font-size:9px;opacity:.65;}
+/* ── TIME INPUT ───────────────────────────────────────────────────────────── */
+#gsc .irow {
+  display: flex; gap: 16px; align-items: flex-end;
+  margin-bottom: 26px; flex-wrap: wrap;
+}
+#gsc .ig { flex: 1; min-width: 200px; }
+#gsc .ilbl {
+  display: block; font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--tx3); letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 10px;
+}
+#gsc .trow { display: flex; align-items: center; gap: 4px; }
+#gsc .trow input {
+  width: 68px; padding: 12px 8px;
+  background: var(--bg4); border: 2px solid rgba(0,232,255,0.25);
+  border-radius: 6px; color: var(--cy);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 28px; text-align: center; outline: none;
+  transition: border-color .18s; font-weight: 700;
+  -moz-appearance: textfield; appearance: textfield;
+  letter-spacing: 2px;
+}
+#gsc .trow input::-webkit-outer-spin-button,
+#gsc .trow input::-webkit-inner-spin-button { -webkit-appearance: none; }
+#gsc .trow input:focus {
+  border-color: var(--cy);
+  background: #0e1e2e;
+}
+#gsc .tsep {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 26px; font-weight: 900; color: var(--cy);
+  line-height: 1; padding-bottom: 4px; opacity: 0.7;
+}
+#gsc .thint {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px; color: var(--tx3); letter-spacing: 2px; margin-top: 8px;
+}
+#gsc .cbtn {
+  padding: 14px 32px;
+  background: var(--mg); border: none;
+  border-radius: 6px; color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px; font-weight: 900; letter-spacing: 3px;
+  text-transform: uppercase; cursor: pointer;
+  transition: all .18s; white-space: nowrap;
+}
+#gsc .cbtn:hover { background: #ff5599; transform: translateY(-1px); }
+#gsc .cbtn:active { transform: translateY(0); }
 
-/* INPUT */
-#gsc .irow{display:flex;gap:14px;align-items:flex-end;margin-bottom:22px;flex-wrap:wrap;}
-#gsc .ig{flex:1;min-width:180px;}
-#gsc .ilbl{display:block;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--txd);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
-#gsc .trow{display:flex;align-items:center;gap:5px;}
-#gsc .trow input{width:56px;padding:8px 6px;background:var(--bg3);border:1px solid var(--br);border-radius:4px;color:var(--cy);font-family:'Share Tech Mono',monospace;font-size:18px;text-align:center;outline:none;transition:border-color .18s;-moz-appearance:textfield;appearance:textfield;}
-#gsc .trow input::-webkit-outer-spin-button,#gsc .trow input::-webkit-inner-spin-button{-webkit-appearance:none;}
-#gsc .trow input:focus{border-color:var(--cy);box-shadow:0 0 8px rgba(0,245,255,0.18);}
-#gsc .tsep{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;color:var(--cy);}
-#gsc .thint{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txd);letter-spacing:1px;margin-top:5px;}
-#gsc .cbtn{padding:10px 26px;background:transparent;border:1px solid var(--mg);border-radius:4px;color:var(--mg);font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;text-shadow:var(--glm);transition:all .18s;white-space:nowrap;}
-#gsc .cbtn:hover{background:var(--dm);box-shadow:0 0 20px rgba(255,0,170,0.2);}
+/* ── ERROR ────────────────────────────────────────────────────────────────── */
+#gsc .err {
+  display: none; font-family: 'Share Tech Mono', monospace;
+  font-size: 12px; color: var(--mg); text-align: center;
+  padding: 11px; border: 1px solid rgba(255,45,120,0.3);
+  border-radius: 6px; background: var(--dm); margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+#gsc .err.on { display: block; }
 
-/* ERROR */
-#gsc .err{display:none;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--mg);text-align:center;padding:9px;border:1px solid rgba(255,0,170,0.25);border-radius:4px;background:var(--dm);margin-bottom:14px;}
-#gsc .err.on{display:block;}
+/* ── RESULTS ──────────────────────────────────────────────────────────────── */
+#gsc .res { display: none; }
+#gsc .res.on { display: block; }
 
-/* RESULTS */
-#gsc .res{display:none;}
-#gsc .res.on{display:block;}
+/* ── RESULTS HEADER ───────────────────────────────────────────────────────── */
+#gsc .reshdr {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 14px;
+  margin-bottom: 22px; padding: 18px 20px;
+  background: var(--bg2); border: 1px solid var(--br);
+  border-radius: 8px;
+}
+#gsc .resname {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px; font-weight: 900;
+  color: var(--tx); letter-spacing: 3px;
+}
+#gsc .restarget {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 28px; color: var(--am); letter-spacing: 3px;
+  margin-top: 4px; font-weight: 700;
+}
+#gsc .badges { display: flex; gap: 10px; flex-wrap: wrap; }
+#gsc .badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--tx3);
+  background: var(--bg3); border: 1px solid var(--br2);
+  border-radius: 4px; padding: 8px 14px; letter-spacing: 1px; white-space: nowrap;
+}
+#gsc .badge span {
+  display: block; color: var(--am2);
+  font-size: 20px; font-weight: 700; letter-spacing: 2px; margin-top: 3px;
+}
 
-/* RES HEADER */
-#gsc .reshdr{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--br);}
-#gsc .resname{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--cy);text-shadow:var(--glc);letter-spacing:3px;}
-#gsc .restarget{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--am);letter-spacing:2px;text-shadow:var(--gla);margin-top:3px;}
-#gsc .badges{display:flex;gap:8px;flex-wrap:wrap;}
-#gsc .badge{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--txd);background:var(--bg3);border:1px solid var(--br);border-radius:3px;padding:5px 11px;letter-spacing:1px;white-space:nowrap;}
-#gsc .badge span{color:var(--am);font-weight:bold;}
+/* ── STRATEGIES GRID ──────────────────────────────────────────────────────── */
+#gsc .strats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 660px) { #gsc .strats { grid-template-columns: 1fr; } }
 
-/* STRATEGIES */
-#gsc .strats{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-@media(max-width:640px){#gsc .strats{grid-template-columns:1fr;}}
+/* ── CARD ─────────────────────────────────────────────────────────────────── */
+#gsc .card {
+  border: 1px solid var(--br2); border-radius: 8px;
+  overflow: hidden; background: var(--bg2);
+}
+#gsc .card.metro { border-top: 3px solid var(--cy); }
+#gsc .card.ushape { border-top: 3px solid var(--mg); }
+#gsc .chdr {
+  padding: 14px 16px; border-bottom: 1px solid var(--br2);
+  display: flex; flex-direction: column; gap: 4px;
+  background: var(--bg3);
+}
+#gsc .cname {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+}
+#gsc .card.metro .cname { color: var(--cy); }
+#gsc .card.ushape .cname { color: var(--mg); }
+#gsc .ctag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px; color: var(--tx3); letter-spacing: 1px;
+}
 
-/* CARD */
-#gsc .card{border:1px solid var(--br);border-radius:6px;overflow:hidden;background:var(--bg2);}
-#gsc .card.metro{border-color:rgba(0,245,255,0.26);}
-#gsc .card.ushape{border-color:rgba(255,0,170,0.26);}
-#gsc .chdr{padding:12px 14px;border-bottom:1px solid var(--br);display:flex;flex-direction:column;gap:3px;}
-#gsc .card.metro .chdr{background:linear-gradient(135deg,rgba(0,245,255,0.06),transparent);}
-#gsc .card.ushape .chdr{background:linear-gradient(135deg,rgba(255,0,170,0.06),transparent);}
-#gsc .cname{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
-#gsc .card.metro .cname{color:var(--cy);text-shadow:var(--glc);}
-#gsc .card.ushape .cname{color:var(--mg);text-shadow:var(--glm);}
-#gsc .ctag{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txd);letter-spacing:1px;}
+/* ── TABLE ────────────────────────────────────────────────────────────────── */
+#gsc .tbl { width: 100%; border-collapse: collapse; }
+#gsc .tbl th {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px; color: var(--tx3); letter-spacing: 2px; text-transform: uppercase;
+  padding: 10px 14px; text-align: right;
+  border-bottom: 1px solid var(--br2); background: var(--bg3);
+}
+#gsc .tbl th:first-child { text-align: left; }
+#gsc .tbl td {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px; color: var(--tx2);
+  padding: 13px 14px; text-align: right;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+#gsc .tbl td:first-child {
+  text-align: left; color: var(--tx3);
+  font-size: 13px; font-family: 'Rajdhani', sans-serif;
+  font-weight: 600; letter-spacing: 1px;
+}
+#gsc .tbl tr:last-child td { border-bottom: none; }
+#gsc .tbl tr:hover td { background: rgba(255,255,255,0.03); }
 
-/* TABLE */
-#gsc .tbl{width:100%;border-collapse:collapse;}
-#gsc .tbl th{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txd);letter-spacing:2px;text-transform:uppercase;padding:8px 11px;text-align:right;border-bottom:1px solid rgba(255,255,255,0.04);background:var(--bg3);}
-#gsc .tbl th:first-child{text-align:left;}
-#gsc .tbl td{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--tx);padding:8px 11px;text-align:right;border-bottom:1px solid rgba(255,255,255,0.03);}
-#gsc .tbl td:first-child{text-align:left;color:var(--txd);}
-#gsc .tbl tr:last-child td{border-bottom:none;}
-#gsc .tbl tr:hover td{background:rgba(255,255,255,0.014);}
+/* ── SPLIT TIME COLORS ────────────────────────────────────────────────────── */
+#gsc .ceven { color: var(--cy)  !important; font-weight: 700; }
+#gsc .cfast { color: var(--gn)  !important; font-weight: 700; }
+#gsc .cmid  { color: var(--tx2) !important; }
+#gsc .ckick { color: var(--mg)  !important; font-weight: 700; }
+#gsc .cfin  { color: var(--am)  !important; font-weight: 700; font-size: 17px !important; }
 
-/* SPLIT COLORS */
-#gsc .ceven{color:var(--cy)!important;}
-#gsc .cfast{color:var(--gn)!important;}
-#gsc .cmid{color:var(--tx)!important;}
-#gsc .ckick{color:var(--mg)!important;text-shadow:var(--glm);}
-#gsc .cfin{color:var(--am)!important;font-weight:bold;text-shadow:var(--gla);}
+/* ── SEGMENT DOT ──────────────────────────────────────────────────────────── */
+#gsc .dot {
+  display: inline-block; width: 7px; height: 7px;
+  border-radius: 50%; margin-right: 8px; vertical-align: middle;
+}
+#gsc .deven { background: var(--cy); }
+#gsc .dfast { background: var(--gn); }
+#gsc .dmid  { background: var(--tx3); }
+#gsc .dkick { background: var(--mg); }
 
-/* DOT */
-#gsc .dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:6px;vertical-align:middle;}
-#gsc .deven{background:var(--cy);}
-#gsc .dfast{background:var(--gn);}
-#gsc .dmid{background:var(--txd);}
-#gsc .dkick{background:var(--mg);}
+/* ── BAR ──────────────────────────────────────────────────────────────────── */
+#gsc .bar {
+  display: inline-block; height: 4px; border-radius: 2px;
+  vertical-align: middle; margin-left: 7px; opacity: 0.55;
+}
 
-/* BAR */
-#gsc .bar{display:inline-block;height:3px;border-radius:2px;vertical-align:middle;margin-left:5px;opacity:.6;}
+/* ── MILE MARKER ROWS ─────────────────────────────────────────────────────── */
+#gsc .mrow td {
+  background: var(--da) !important;
+  border-top: 1px solid rgba(255,204,0,0.22) !important;
+  border-bottom: 1px solid rgba(255,204,0,0.22) !important;
+  padding: 8px 14px;
+}
+#gsc .mcell { text-align: left !important; }
+#gsc .mflag {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px; font-weight: 900; color: var(--am);
+  letter-spacing: 2px; margin-right: 10px;
+}
+#gsc .mdist {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px; color: var(--tx3);
+}
+#gsc .mtime {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px; color: var(--am2) !important;
+  text-align: right !important; font-weight: 700;
+}
 
-/* MILE ROWS */
-#gsc .mrow td{background:rgba(255,179,0,0.06)!important;border-top:1px solid rgba(255,179,0,0.20)!important;border-bottom:1px solid rgba(255,179,0,0.20)!important;padding:5px 11px;}
-#gsc .mcell{text-align:left!important;color:var(--txd)!important;}
-#gsc .mflag{font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;color:var(--am);letter-spacing:2px;text-shadow:var(--gla);margin-right:7px;}
-#gsc .mdist{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txd);}
-#gsc .mtime{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--am)!important;text-align:right!important;font-weight:bold;text-shadow:var(--gla);}
+/* ── LEGEND ───────────────────────────────────────────────────────────────── */
+#gsc .legend {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  padding: 10px 14px; border-top: 1px solid var(--br2);
+  background: var(--bg3);
+}
+#gsc .li {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px; color: var(--tx3); letter-spacing: 1px;
+  display: flex; align-items: center; gap: 6px;
+}
+#gsc .ld { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 
-/* LEGEND */
-#gsc .legend{display:flex;gap:12px;flex-wrap:wrap;padding:8px 11px;border-top:1px solid var(--br);background:var(--bg3);}
-#gsc .li{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txd);letter-spacing:1px;display:flex;align-items:center;gap:5px;}
-#gsc .ld{width:6px;height:6px;border-radius:50%;display:inline-block;}
+/* ── RESET BUTTON ─────────────────────────────────────────────────────────── */
+#gsc .resetbtn {
+  display: block; margin: 28px auto 0;
+  padding: 13px 36px; background: transparent;
+  border: 2px solid var(--cy); border-radius: 6px;
+  color: var(--cy); font-family: 'Orbitron', sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; cursor: pointer; transition: all .18s;
+}
+#gsc .resetbtn:hover {
+  background: var(--dc); color: var(--tx);
+}
 
-/* RESET BUTTON */
-#gsc .resetbtn{display:block;margin:24px auto 0;padding:10px 28px;background:transparent;border:1px solid var(--cy);border-radius:4px;color:var(--cy);font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;text-shadow:var(--glc);transition:all .18s;}
-#gsc .resetbtn:hover{background:var(--dc);box-shadow:0 0 20px rgba(0,245,255,0.18);}
-
-/* FOOTER */
-#gsc .ftr{margin-top:56px;padding-top:18px;border-top:1px solid var(--br);text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--txd);letter-spacing:2px;}
-#gsc .ftr strong{color:var(--cy);text-shadow:var(--glc);font-weight:normal;}
+/* ── FOOTER ───────────────────────────────────────────────────────────────── */
+#gsc .ftr {
+  margin-top: 60px; padding-top: 20px;
+  border-top: 1px solid var(--br);
+  text-align: center; font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--tx3); letter-spacing: 2px;
+}
+#gsc .ftr strong { color: var(--cy); font-weight: normal; }
 </style>
 
 <div id="gsc">
 <div class="inn">
 
+  <!-- HEADER -->
   <div class="hdr">
     <div class="txid">GRAVIFICER // TX-SPLIT // SIGNAL ACTIVE</div>
     <div class="title">SPLIT <em>CALCULATOR</em></div>
-    <div class="sub">RACE ARCHITECTURE FOR MIDDLE DISTANCE &amp; CROSS COUNTRY</div>
+    <div class="sub">RACE ARCHITECTURE &nbsp;·&nbsp; MIDDLE DISTANCE &amp; CROSS COUNTRY</div>
   </div>
 
+  <!-- TABS -->
   <div class="tabs">
     <button class="tab on" data-tab="track">&#9649; TRACK &amp; ROAD</button>
-    <button class="tab" data-tab="xc">&#9649; CROSS COUNTRY</button>
+    <button class="tab"    data-tab="xc">&#9649; CROSS COUNTRY</button>
   </div>
 
   <!-- TRACK PANEL -->
   <div class="panel on" data-panel="track">
-    <div class="live"><span class="ldot"></span>SELECT RACE &nbsp;// ENTER TIME //&nbsp; CALCULATE</div>
+    <div class="live"><span class="ldot"></span>SELECT RACE &nbsp;//&nbsp; ENTER TIME &nbsp;//&nbsp; CALCULATE</div>
     <div class="rgrid" data-section="track">
       <button class="rbtn" data-race="800m"  data-section="track"><span class="rdist">800m</span><span class="rlap">2 LAPS</span></button>
       <button class="rbtn" data-race="1500m" data-section="track"><span class="rdist">1500m</span><span class="rlap">3.75 LAPS</span></button>
@@ -200,20 +410,20 @@
           <span class="tsep">.</span>
           <input type="number" id="t-ms"  min="0" max="99" placeholder="00">
         </div>
-        <div class="thint">MIN : SEC . 1/100</div>
+        <div class="thint">MIN &nbsp;:&nbsp; SEC &nbsp;.&nbsp; 1/100</div>
       </div>
       <button class="cbtn" data-calc="track">CALCULATE</button>
     </div>
-    <div class="err" id="t-err">SELECT A RACE AND ENTER A VALID TARGET TIME</div>
+    <div class="err" id="t-err">&#9888; SELECT A RACE AND ENTER A VALID TARGET TIME</div>
     <div class="res" id="t-res"></div>
   </div>
 
   <!-- XC PANEL -->
   <div class="panel" data-panel="xc">
-    <div class="live"><span class="ldot"></span>SELECT RACE &nbsp;// ENTER TIME //&nbsp; CALCULATE</div>
+    <div class="live"><span class="ldot"></span>SELECT RACE &nbsp;//&nbsp; ENTER TIME &nbsp;//&nbsp; CALCULATE</div>
     <div class="rgrid" data-section="xc">
-      <button class="rbtn" data-race="5k" data-section="xc"><span class="rdist">5K</span><span class="rlap">5 x 1K SPLITS</span></button>
-      <button class="rbtn" data-race="8k" data-section="xc"><span class="rdist">8K</span><span class="rlap">8 x 1K SPLITS</span></button>
+      <button class="rbtn" data-race="5k" data-section="xc"><span class="rdist">5K</span><span class="rlap">5 × 1K SPLITS</span></button>
+      <button class="rbtn" data-race="8k" data-section="xc"><span class="rdist">8K</span><span class="rlap">8 × 1K SPLITS</span></button>
     </div>
     <div class="irow">
       <div class="ig">
@@ -225,17 +435,17 @@
           <span class="tsep">.</span>
           <input type="number" id="x-ms"  min="0" max="99" placeholder="00">
         </div>
-        <div class="thint">MIN : SEC . 1/100</div>
+        <div class="thint">MIN &nbsp;:&nbsp; SEC &nbsp;.&nbsp; 1/100</div>
       </div>
       <button class="cbtn" data-calc="xc">CALCULATE</button>
     </div>
-    <div class="err" id="x-err">SELECT A RACE AND ENTER A VALID TARGET TIME</div>
+    <div class="err" id="x-err">&#9888; SELECT A RACE AND ENTER A VALID TARGET TIME</div>
     <div class="res" id="x-res"></div>
   </div>
 
   <div class="ftr">
-    <strong>GRAVIFICER</strong> // SIGNAL ARCHITECTURE // MVANNP<br>
-    <span style="font-size:9px;display:block;margin-top:4px;">EVERY SPLIT IS AN INTENTION. EVERY LAP IS A DECISION.</span>
+    <strong>GRAVIFICER</strong> &nbsp;//&nbsp; SIGNAL ARCHITECTURE &nbsp;//&nbsp; MVANNP<br>
+    <span style="font-size:9px;display:block;margin-top:5px;opacity:.5;">EVERY SPLIT IS AN INTENTION. EVERY LAP IS A DECISION.</span>
   </div>
 
 </div>
@@ -245,7 +455,6 @@
 (function () {
   'use strict';
 
-  // Wait for DOM ready
   function ready(fn) {
     if (document.readyState !== 'loading') { fn(); }
     else { document.addEventListener('DOMContentLoaded', fn); }
@@ -256,10 +465,9 @@
     var root = document.getElementById('gsc');
     if (!root) { return; }
 
-    // ── STATE ────────────────────────────────────────────────────────────────
     var sel = { track: null, xc: null };
 
-    // ── TAB BUTTONS ──────────────────────────────────────────────────────────
+    // ── TABS ──────────────────────────────────────────────────────────────────
     var tabs = root.querySelectorAll('.tab');
     for (var ti = 0; ti < tabs.length; ti++) {
       tabs[ti].addEventListener('click', function () {
@@ -274,7 +482,7 @@
       });
     }
 
-    // ── RACE BUTTONS ─────────────────────────────────────────────────────────
+    // ── RACE BUTTONS ──────────────────────────────────────────────────────────
     var rbtns = root.querySelectorAll('.rbtn');
     for (var ri = 0; ri < rbtns.length; ri++) {
       rbtns[ri].addEventListener('click', function () {
@@ -287,17 +495,16 @@
       });
     }
 
-    // ── CALCULATE BUTTONS ────────────────────────────────────────────────────
+    // ── CALCULATE BUTTONS ─────────────────────────────────────────────────────
     var cbtns = root.querySelectorAll('.cbtn');
     for (var ci = 0; ci < cbtns.length; ci++) {
       cbtns[ci].addEventListener('click', function () {
         var which = this.getAttribute('data-calc');
-        if (which === 'track') { doTrack(); }
-        else                   { doXC(); }
+        if (which === 'track') { doTrack(); } else { doXC(); }
       });
     }
 
-    // ── HELPERS ──────────────────────────────────────────────────────────────
+    // ── HELPERS ───────────────────────────────────────────────────────────────
     function parseTime(mId, sId, msId) {
       var m  = parseInt(document.getElementById(mId).value,  10) || 0;
       var s  = parseInt(document.getElementById(sId).value,  10) || 0;
@@ -349,7 +556,7 @@
       return 'mid';
     }
 
-    // ── RACE DATA ─────────────────────────────────────────────────────────────
+    // ── RACE DATA ──────────────────────────────────────────────────────────────
     var TRACK = {
       '800m':  { name:'800M',   totalM:800,
         segs:[{lbl:'Lap 1 — 200m',dist:'200m',m:200},{lbl:'Lap 1 — 400m',dist:'200m',m:200},
@@ -375,7 +582,7 @@
       '8k': { name:'8K XC', totalM:8000, km:8 }
     };
 
-    // ── BUILD TRACK TABLE ─────────────────────────────────────────────────────
+    // ── TRACK TABLE ────────────────────────────────────────────────────────────
     function trackTable(segs, isU) {
       var h = '<table class="tbl"><thead><tr><th>SEGMENT</th><th>DIST</th><th>SPLIT</th><th>CUMULATIVE</th></tr></thead><tbody>';
       for (var i = 0; i < segs.length; i++) {
@@ -384,8 +591,8 @@
         var pc  = isU ? 'c' + s.ph : 'ceven';
         var cc  = lst ? 'cfin' : '';
         var dc  = isU ? 'd' + s.ph : 'deven';
-        var bc  = isU ? (s.ph==='fast'?'#00ff88':s.ph==='kick'?'#ff00aa':'#5a7090') : '#00f5ff';
-        var bw  = isU ? Math.max(8, Math.round(40 / Math.max(s.mult, 0.5))) : 40;
+        var bc  = isU ? (s.ph==='fast'?'#00e676':s.ph==='kick'?'#ff2d78':'#4a6a88') : '#00e8ff';
+        var bw  = isU ? Math.max(8, Math.round(44 / Math.max(s.mult, 0.5))) : 44;
         h += '<tr>';
         h += '<td><span class="dot ' + dc + '"></span>' + s.lbl + '</td>';
         h += '<td>' + s.dist + '</td>';
@@ -397,7 +604,7 @@
       return h;
     }
 
-    // ── INTERPOLATE TIME AT METER MARK ────────────────────────────────────────
+    // ── INTERPOLATE ────────────────────────────────────────────────────────────
     function timeAt(kms, meter) {
       var kmF  = meter / 1000;
       var lo   = Math.floor(kmF);
@@ -408,7 +615,7 @@
       return tLo + (tHi - tLo) * frac;
     }
 
-    // ── BUILD XC TABLE WITH MILE MARKERS ─────────────────────────────────────
+    // ── XC TABLE ───────────────────────────────────────────────────────────────
     function xcTable(kms, isU, totalM) {
       var MILE = 1609.344;
       var miles = [];
@@ -436,11 +643,11 @@
         var pc  = isU ? 'c' + km.ph : 'ceven';
         var cc  = lst ? 'cfin' : '';
         var dc  = isU ? 'd' + km.ph : 'deven';
-        var bc  = isU ? (km.ph==='fast'?'#00ff88':km.ph==='kick'?'#ff00aa':'#5a7090') : '#00f5ff';
+        var bc  = isU ? (km.ph==='fast'?'#00e676':km.ph==='kick'?'#ff2d78':'#4a6a88') : '#00e8ff';
         h += '<tr>';
         h += '<td><span class="dot ' + dc + '"></span>' + km.lbl + '</td>';
         h += '<td>1K</td>';
-        h += '<td class="' + pc + '">' + fmt(km.split) + '<span class="bar" style="width:40px;background:' + bc + ';"></span></td>';
+        h += '<td class="' + pc + '">' + fmt(km.split) + '<span class="bar" style="width:44px;background:' + bc + ';"></span></td>';
         h += '<td class="' + cc + '">' + fmt(km.cum) + '</td>';
         h += '</tr>';
       }
@@ -448,42 +655,46 @@
       return h;
     }
 
-    // ── RENDER RESULTS ────────────────────────────────────────────────────────
+    // ── RENDER RESULTS ─────────────────────────────────────────────────────────
     function renderResult(resEl, raceName, totalSec, badges, metroHTML, uHTML) {
       var bdg = '<div class="badges">';
       for (var i = 0; i < badges.length; i++) {
-        bdg += '<div class="badge">' + badges[i].lbl + ' <span>' + fmt(badges[i].val) + '</span></div>';
+        bdg += '<div class="badge">' + badges[i].lbl + '<span>' + fmt(badges[i].val) + '</span></div>';
       }
       bdg += '</div>';
 
       var legend = '<div class="legend">' +
-        '<span class="li"><span class="ld" style="background:#00ff88"></span>FAST START</span>' +
-        '<span class="li"><span class="ld" style="background:#5a7090"></span>SETTLE</span>' +
-        '<span class="li"><span class="ld" style="background:#ff00aa"></span>KICK</span>' +
+        '<span class="li"><span class="ld" style="background:#00e676"></span>FAST START</span>' +
+        '<span class="li"><span class="ld" style="background:#4a6a88"></span>SETTLE</span>' +
+        '<span class="li"><span class="ld" style="background:#ff2d78"></span>KICK</span>' +
         '</div>';
 
       resEl.innerHTML =
         '<div class="reshdr">' +
-          '<div><div class="resname">' + raceName + '</div>' +
-          '<div class="restarget">TARGET &#x2192; ' + fmt(totalSec) + '</div></div>' +
+          '<div>' +
+            '<div class="resname">' + raceName + '</div>' +
+            '<div class="restarget">' + fmt(totalSec) + '</div>' +
+          '</div>' +
           bdg +
         '</div>' +
         '<div class="strats">' +
-          '<div class="card metro"><div class="chdr"><div class="cname">THE METRONOME</div><div class="ctag">EVEN SPLITS // PERFECT CONSISTENCY</div></div>' + metroHTML + '</div>' +
-          '<div class="card ushape"><div class="chdr"><div class="cname">THE U-SHAPE</div><div class="ctag">FAST START &#x2192; SETTLE &#x2192; KICK</div></div>' + uHTML + legend + '</div>' +
+          '<div class="card metro">' +
+            '<div class="chdr"><div class="cname">THE METRONOME</div><div class="ctag">EVEN SPLITS — PERFECT CONSISTENCY</div></div>' +
+            metroHTML +
+          '</div>' +
+          '<div class="card ushape">' +
+            '<div class="chdr"><div class="cname">THE U-SHAPE</div><div class="ctag">FAST START — SETTLE — KICK</div></div>' +
+            uHTML + legend +
+          '</div>' +
         '</div>' +
-        '<button class="resetbtn" data-reset="' + resEl.id + '">&#x21BA; CALCULATE ANOTHER RACE</button>';
+        '<button class="resetbtn">&#x21BA;&nbsp; CALCULATE ANOTHER RACE</button>';
 
-      // Wire the reset button immediately after injecting HTML
       var resetBtn = resEl.querySelector('.resetbtn');
       resetBtn.addEventListener('click', function () {
         var section = resEl.id === 't-res' ? 'track' : 'xc';
-        // Clear selection state
         sel[section] = null;
-        // Deselect all race buttons for this section
-        var rbtns = root.querySelectorAll('.rbtn[data-section="' + section + '"]');
-        for (var i = 0; i < rbtns.length; i++) { rbtns[i].classList.remove('on'); }
-        // Clear time inputs
+        var rbtnList = root.querySelectorAll('.rbtn[data-section="' + section + '"]');
+        for (var i = 0; i < rbtnList.length; i++) { rbtnList[i].classList.remove('on'); }
         if (section === 'track') {
           document.getElementById('t-min').value = '';
           document.getElementById('t-sec').value = '';
@@ -493,12 +704,10 @@
           document.getElementById('x-sec').value = '';
           document.getElementById('x-ms').value  = '';
         }
-        // Hide results and error
         resEl.classList.remove('on');
         resEl.innerHTML = '';
         var errEl = document.getElementById(section === 'track' ? 't-err' : 'x-err');
         errEl.classList.remove('on');
-        // Scroll back up to race selector
         root.querySelector('.panel.on .rgrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
 
@@ -506,12 +715,11 @@
       resEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // ── CALCULATE TRACK ───────────────────────────────────────────────────────
+    // ── CALCULATE TRACK ────────────────────────────────────────────────────────
     function doTrack() {
       var errEl = document.getElementById('t-err');
       var resEl = document.getElementById('t-res');
       errEl.classList.remove('on');
-
       if (!sel.track) { errEl.classList.add('on'); return; }
       var total = parseTime('t-min', 't-sec', 't-ms');
       if (!total || total <= 0) { errEl.classList.add('on'); return; }
@@ -521,37 +729,29 @@
       var n     = segs.length;
       var mults = uMults(n);
 
-      var even = [];
-      var c = 0;
+      var even = []; var c = 0;
       for (var i = 0; i < n; i++) {
-        var sp = total * (segs[i].m / race.totalM);
-        c += sp;
+        var sp = total * (segs[i].m / race.totalM); c += sp;
         even.push({ lbl:segs[i].lbl, dist:segs[i].dist, split:sp, cum:c, ph:'even', mult:1 });
       }
-
-      var u = [];
-      c = 0;
+      var u = []; c = 0;
       for (var j = 0; j < n; j++) {
-        var ev  = total * (segs[j].m / race.totalM);
-        var sp2 = ev * mults[j];
-        c += sp2;
+        var ev = total * (segs[j].m / race.totalM);
+        var sp2 = ev * mults[j]; c += sp2;
         u.push({ lbl:segs[j].lbl, dist:segs[j].dist, split:sp2, cum:c, ph:phase(j,n), mult:mults[j] });
       }
 
-      var avg400 = total / (race.totalM / 400);
       renderResult(resEl, race.name, total,
-        [{ lbl:'AVG / 400m', val:avg400 }],
-        trackTable(even, false),
-        trackTable(u, true)
+        [{ lbl:'AVG / 400m', val: total / (race.totalM / 400) }],
+        trackTable(even, false), trackTable(u, true)
       );
     }
 
-    // ── CALCULATE XC ──────────────────────────────────────────────────────────
+    // ── CALCULATE XC ───────────────────────────────────────────────────────────
     function doXC() {
       var errEl = document.getElementById('x-err');
       var resEl = document.getElementById('x-res');
       errEl.classList.remove('on');
-
       if (!sel.xc) { errEl.classList.add('on'); return; }
       var total = parseTime('x-min', 'x-sec', 'x-ms');
       if (!total || total <= 0) { errEl.classList.add('on'); return; }
@@ -562,29 +762,23 @@
       var perMi = total / (race.totalM / 1609.344);
       var mults = uMults(n);
 
-      var even = [];
-      var c = 0;
+      var even = []; var c = 0;
       for (var i = 0; i < n; i++) {
         c += perKm;
         even.push({ lbl:'KM '+(i+1)+(i===n-1?' (FINISH)':''), split:perKm, cum:c, ph:'even' });
       }
-
-      var u = [];
-      c = 0;
+      var u = []; c = 0;
       for (var j = 0; j < n; j++) {
-        var sp = perKm * mults[j];
-        c += sp;
+        var sp = perKm * mults[j]; c += sp;
         u.push({ lbl:'KM '+(j+1)+(j===n-1?' (FINISH)':''), split:sp, cum:c, ph:phase(j,n), mult:mults[j] });
       }
 
       renderResult(resEl, race.name, total,
         [{ lbl:'AVG / 1K', val:perKm }, { lbl:'AVG / MILE', val:perMi }],
-        xcTable(even, false, race.totalM),
-        xcTable(u, true, race.totalM)
+        xcTable(even, false, race.totalM), xcTable(u, true, race.totalM)
       );
     }
 
   }); // end ready()
-
 })(); // end IIFE
 </script>
