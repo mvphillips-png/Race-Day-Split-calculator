@@ -6,6 +6,12 @@
 <title>GRAVIFICER // SPLIT CALCULATOR</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,400;0,600;0,700;1,400&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
+body {
+  margin: 0;
+  padding: 0;
+  background: #080b10;
+}
+
 /* ── ROOT TOKENS ─────────────────────────────────────────────────────────── */
 #gsc {
   --bg:    #080b10;
@@ -35,6 +41,7 @@
   max-width: 980px;
   margin: 0 auto;
   position: relative;
+  min-height: 100vh;
 }
 
 #gsc * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -360,9 +367,7 @@
   font-size: 12px; font-weight: 700; letter-spacing: 3px;
   text-transform: uppercase; cursor: pointer; transition: all .18s;
 }
-#gsc .resetbtn:hover {
-  background: var(--dc); color: var(--tx);
-}
+#gsc .resetbtn:hover { background: var(--dc); color: var(--tx); }
 
 /* ── FOOTER ───────────────────────────────────────────────────────────────── */
 #gsc .ftr {
@@ -373,6 +378,8 @@
 }
 #gsc .ftr strong { color: var(--cy); font-weight: normal; }
 </style>
+</head>
+<body>
 
 <div id="gsc">
 <div class="inn">
@@ -444,7 +451,7 @@
   </div>
 
   <div class="ftr">
-    <strong>GRAVIFICER</strong> &nbsp;//&nbsp; SIGNAL ARCHITECTURE &nbsp;//&nbsp; ©2026 MVANNP<br>
+    <strong>GRAVIFICER</strong> &nbsp;//&nbsp; SIGNAL ARCHITECTURE &nbsp;//&nbsp; &copy;2026 MVANNP<br>
     <span style="font-size:9px;display:block;margin-top:5px;opacity:.5;">EVERY SPLIT IS AN INTENTION. EVERY LAP IS A DECISION.</span>
   </div>
 
@@ -467,7 +474,6 @@
 
     var sel = { track: null, xc: null };
 
-    // ── TABS ──────────────────────────────────────────────────────────────────
     var tabs = root.querySelectorAll('.tab');
     for (var ti = 0; ti < tabs.length; ti++) {
       tabs[ti].addEventListener('click', function () {
@@ -482,7 +488,6 @@
       });
     }
 
-    // ── RACE BUTTONS ──────────────────────────────────────────────────────────
     var rbtns = root.querySelectorAll('.rbtn');
     for (var ri = 0; ri < rbtns.length; ri++) {
       rbtns[ri].addEventListener('click', function () {
@@ -495,7 +500,6 @@
       });
     }
 
-    // ── CALCULATE BUTTONS ─────────────────────────────────────────────────────
     var cbtns = root.querySelectorAll('.cbtn');
     for (var ci = 0; ci < cbtns.length; ci++) {
       cbtns[ci].addEventListener('click', function () {
@@ -504,7 +508,6 @@
       });
     }
 
-    // ── HELPERS ───────────────────────────────────────────────────────────────
     function parseTime(mId, sId, msId) {
       var m  = parseInt(document.getElementById(mId).value,  10) || 0;
       var s  = parseInt(document.getElementById(sId).value,  10) || 0;
@@ -556,7 +559,6 @@
       return 'mid';
     }
 
-    // ── RACE DATA ──────────────────────────────────────────────────────────────
     var TRACK = {
       '800m':  { name:'800M',   totalM:800,
         segs:[{lbl:'Lap 1 — 200m',dist:'200m',m:200},{lbl:'Lap 1 — 400m',dist:'200m',m:200},
@@ -582,7 +584,6 @@
       '8k': { name:'8K XC', totalM:8000, km:8 }
     };
 
-    // ── TRACK TABLE ────────────────────────────────────────────────────────────
     function trackTable(segs, isU) {
       var h = '<table class="tbl"><thead><tr><th>SEGMENT</th><th>DIST</th><th>SPLIT</th><th>CUMULATIVE</th></tr></thead><tbody>';
       for (var i = 0; i < segs.length; i++) {
@@ -604,7 +605,6 @@
       return h;
     }
 
-    // ── INTERPOLATE ────────────────────────────────────────────────────────────
     function timeAt(kms, meter) {
       var kmF  = meter / 1000;
       var lo   = Math.floor(kmF);
@@ -615,7 +615,6 @@
       return tLo + (tHi - tLo) * frac;
     }
 
-    // ── XC TABLE ───────────────────────────────────────────────────────────────
     function xcTable(kms, isU, totalM) {
       var MILE = 1609.344;
       var miles = [];
@@ -655,7 +654,6 @@
       return h;
     }
 
-    // ── RENDER RESULTS ─────────────────────────────────────────────────────────
     function renderResult(resEl, raceName, totalSec, badges, metroHTML, uHTML) {
       var bdg = '<div class="badges">';
       for (var i = 0; i < badges.length; i++) {
@@ -715,7 +713,6 @@
       resEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // ── CALCULATE TRACK ────────────────────────────────────────────────────────
     function doTrack() {
       var errEl = document.getElementById('t-err');
       var resEl = document.getElementById('t-res');
@@ -747,7 +744,6 @@
       );
     }
 
-    // ── CALCULATE XC ───────────────────────────────────────────────────────────
     function doXC() {
       var errEl = document.getElementById('x-err');
       var resEl = document.getElementById('x-res');
@@ -779,6 +775,8 @@
       );
     }
 
-  }); // end ready()
-})(); // end IIFE
+  });
+})();
 </script>
+</body>
+</html>
